@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Steward – Program Status Dashboard</title>
+
+    <style>
+        body {
+            font-family: Georgia, serif;
+            margin: 0;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .summary-box {
+            background: white;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid #4caf50;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            background-color: white;
+            padding: 18px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .health {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .green { color: #2e7d32; }
+        .yellow { color: #ff9800; }
+        .red { color: #d32f2f; }
+
+        .label {
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        a {
+            color: #1a0dab;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Team Steward – Program Portfolio Status</h1>
+
+    <div class="summary-box">
+        <p><strong>Executive Summary:</strong> Most projects remain on track with visible progress in portfolio development and proactive risk monitoring. Common themes include upcoming usability testing and resume alignment with final deliverables. The overall program health is strong with solid momentum heading into final execution phases.</p>
+    </div>
+
+    <div class="project-grid">
+
+        <!-- ✅ Project Card – Samuel -->
+        <div class="project-card">
+            <div class="health green">🟢 On Track</div>
+            <p class="label">Project Name:</p>
+            <p>IT Career Launch Campaign</p>
+
+            <p class="label">Project Charter:</p>
+            <p><a href="https://savilav.github.io/semester-project-charter-cis-4860/" target="_blank">
+                View Charter & Status Reports</a></p>
+
+            <p class="label">Summary:</p>
+            <p>The portfolio website is fully deployed and being enhanced with branding and content updates. Certification planning and targeted job-search actions are integrated into project scope, with deliverables aligned to stakeholder feedback.</p>
+
+            <p class="label">Challenge/Risk:</p>
+            <p>Collecting timely usability feedback and aligning job-application timing with final deliverables may increase near-deadline workload.</p>
+
+            <p class="label">Next Step:</p>
+            <p>Publish portfolio revisions and begin submitting job applications using the updated professional branding materials.</p>
+        </div>
+
+        <!-- 🔹 Project Card – Teammate #2 -->
+        <div class="project-card">
+            <div class="health green">🟢 On Track</div>
+            <p class="label">Project Name:</p>
+            <p>Teammate Project Title</p>
+            <p class="label">Summary:</p>
+            <p>To be added.</p>
+            <p class="label">Challenge/Risk:</p>
+            <p>To be added.</p>
+            <p class="label">Next Step:</p>
+            <p>To be added.</p>
+        </div>
+
+        <!-- 🔹 Project Card – Teammate #3 -->
+        <div class="project-card">
+            <div class="health green">🟢 On Track</div>
+            <p class="label">Project Name:</p>
+            <p>Teammate Project Title</p>
+            <p class="label">Summary:</p>
+            <p>To be added.</p>
+            <p class="label">Challenge/Risk:</p>
+            <p>To be added.</p>
+            <p class="label">Next Step:</p>
+            <p>To be added.</p>
+        </div>
+
+        <!-- 🔹 Project Card – Teammate #4 -->
+        <div class="project-card">
+            <div class="health green">🟢 On Track</div>
+            <p class="label">Project Name:</p>
+            <p>Teammate Project Title</p>
+            <p class="label">Summary:</p>
+            <p>To be added.</p>
+            <p class="label">Challenge/Risk:</p>
+            <p>To be added.</p>
+            <p class="label">Next Step:</p>
+            <p>To be added.</p>
+        </div>
+
+        <!-- 🔹 Project Card – Teammate #5 -->
+        <div class="project-card">
+            <div class="health green">🟢 On Track</div>
+            <p class="label">Project Name:</p>
+            <p>Teammate Project Title</p>
+            <p class="label">Summary:</p>
+            <p>To be added.</p>
+            <p class="label">Challenge/Risk:</p>
+            <p>To be added.</p>
+            <p class="label">Next Step:</p>
+            <p>To be added.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
