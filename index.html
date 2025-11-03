@@ -1,167 +1,423 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Steward – Program Status Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Steward – Program Portfolio Status</title>
 
-    <style>
-        body {
-            font-family: Georgia, serif;
-            margin: 0;
-            background-color: #f5f5f5;
-            padding: 20px;
-        }
+  <style>
+    body {
+      font-family: Georgia, serif;
+      margin: 0;
+      background-color: #f5f5f5;
+      padding: 20px;
+      line-height: 1.6;
+      color: #0d1b2a;
+    }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 2.5rem;
-        }
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 2.3rem;
+    }
 
-        .summary-box {
-            background: white;
-            padding: 15px;
-            margin-bottom: 30px;
-            border-left: 5px solid #4caf50;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
+    /* ---------- SECTION WRAPPERS ---------- */
+    section {
+      margin: 40px auto;
+      max-width: 1200px;
+    }
 
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
+    /* ---------- EXECUTIVE SUMMARY ---------- */
+    .summary-box {
+      background: #fff;
+      padding: 20px;
+      border-left: 5px solid #4caf50;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
 
-        .project-card {
-            background-color: white;
-            padding: 18px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+    /* ---------- MEETING NOTES ---------- */
+    .notes {
+      background: #fff;
+      padding: 18px;
+      border-left: 5px solid #1976d2;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
 
-        .health {
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
+    .notes h2 {
+      margin: 0 0 10px;
+      font-size: 1.4rem;
+    }
 
-        .green { color: #2e7d32; }
-        .yellow { color: #ff9800; }
-        .red { color: #d32f2f; }
+    .notes small {
+      color: #555;
+      display: block;
+      margin-bottom: 10px;
+    }
 
-        .label {
-            font-weight: bold;
-            margin-top: 8px;
-        }
+    details.meet {
+      border: 1px solid #e1e5eb;
+      border-radius: 8px;
+      background: #fdfdfd;
+      padding: 12px 16px;
+      transition: box-shadow 0.25s ease;
+    }
 
-        a {
-            color: #1a0dab;
-            text-decoration: underline;
-        }
-    </style>
+    details.meet:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    details.meet summary {
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1rem;
+      background: #e8f0fe;
+      padding: 10px 14px;
+      border-radius: 6px;
+      color: #0d47a1;
+      transition: background 0.2s ease;
+      list-style: none;
+    }
+
+    details.meet summary:hover {
+      background: #d2e3fc;
+    }
+
+    .meta {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      margin: 12px 0 14px;
+    }
+
+    .meta div {
+      background: #f7f7f7;
+      padding: 8px;
+      border-radius: 6px;
+    }
+
+    .label {
+      font-weight: 700;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #eef2f6;
+      margin-left: 6px;
+    }
+
+    .section {
+      margin-top: 10px;
+    }
+
+    .section h4 {
+      margin: 6px 0;
+      font-size: 1rem;
+      color: #0d47a1;
+    }
+
+    .section ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .section li {
+      margin: 4px 0;
+    }
+
+    /* ---------- PROJECT GRID ---------- */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      background-color: #fff;
+      padding: 18px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.18);
+    }
+
+    .health {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .green { color: #2e7d32; }
+    .yellow { color: #ff9800; }
+    .red { color: #d32f2f; }
+
+    a {
+      color: #1a0dab;
+      text-decoration: underline;
+    }
+
+    /* ---------- ARCHIVE ---------- */
+    details.archive {
+      border-left: 5px solid #d32f2f;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 12px 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    details.archive summary {
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #a71f1f;
+      background: #f9eaea;
+      padding: 10px 14px;
+      border-radius: 6px;
+      transition: background 0.2s ease;
+      list-style: none;
+    }
+
+    details.archive summary:hover {
+      background: #f4dede;
+    }
+
+    details.subarchive {
+      border: 1px solid #e1e5eb;
+      border-radius: 8px;
+      background: #fff;
+      margin: 12px 0;
+      padding: 12px 16px;
+      transition: box-shadow 0.25s ease;
+    }
+
+    details.subarchive:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    details.subarchive summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: #0d1b2a;
+      background: #f9f9f9;
+      padding: 8px 10px;
+      border-radius: 5px;
+    }
+
+    details.subarchive summary:hover {
+      background: #f1f1f1;
+    }
+
+    .archive small {
+      color: #444;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 60px;
+    }
+  </style>
 </head>
 
 <body>
+  <h1>Team Steward – Program Portfolio Status</h1>
 
-    <h1>Team Steward – Program Portfolio Status</h1>
+  <!-- EXECUTIVE SUMMARY -->
+  <section class="summary-box">
+    <p><strong>Executive Summary:</strong> Team Steward is entering the final phase of the semester. All members are revisiting deliverables and ensuring project readiness for closure. Week 11 marks a fresh update cycle with placeholders awaiting current progress entries.</p>
+  </section>
 
-    <div class="summary-box">
-        <p><strong>Executive Summary:</strong> Team Steward is demonstrating strong forward momentum across all projects. Three initiatives remain on track, while two are managing timeline or scope refinement challenges based on stakeholder feedback. Common themes include portfolio development, prototype enhancements, certification progress, and career-prep activities such as networking and job applications. The team is well positioned for successful completion with clear plans and sustainable progress.</p>
+  <!-- MEETING NOTES -->
+  <section class="notes" id="meeting-notes">
+    <h2>Team Meeting Notes</h2>
+    <small>Weekly summaries of team progress, energy, and next steps.</small>
+
+    <details class="meet">
+      <summary>Week 11 Check-In — Sunday, Nov 2, 2025 • 5:00–5:25 PM PT <span class="tag">Discord</span></summary>
+
+      <div class="meta">
+        <div><span class="label">Date</span><br> Nov 2, 2025</div>
+        <div><span class="label">Time</span><br> 5:00 – 5:25 PM PT</div>
+        <div><span class="label">Location</span><br> Discord</div>
+        <div><span class="label">Participants</span><br> Samuel, Elaine, Jasmine, David, Everett</div>
+      </div>
+
+      <div class="section">
+  <h4>Team Insights & Takeaways</h4>
+  <ul>
+    <li>What was the biggest win or progress this week?</li>
+    <li>Did anyone share advice or feedback that helped your project?</li>
+    <li>What’s one thing you’d do differently before the final week?</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h4>Looking Ahead</h4>
+  <ul>
+    <li>How’s everyone feeling about final deliverables?</li>
+    <li>Any shared risks or needs where teammates can help each other?</li>
+  </ul>
+</div>
+
+    </details>
+  </section>
+
+  <!-- PROJECT GRID -->
+  <section class="project-grid">
+
+    <!-- Samuel -->
+    <div class="project-card">
+      <div class="health green">🟢 On Track</div>
+      <p class="label">Project Name:</p>
+      <p>IT Career Launch Campaign</p>
+      <p class="label">Project Owner:</p>
+      <p><strong>Samuel Avila Varela</strong></p>
+      <p class="label">Project Charter:</p>
+      <p><a href="https://savilav.github.io/semester-project-charter-cis-4860/" target="_blank">View Charter & Status Reports</a></p>
+      <p class="label">Summary:</p>
+  <p>Project remains on track. Continued Coursera Security+ training and refined Deliverables 5–6 for real job applications.</p>
+      <p class="label">Challenge / Risk:</p>
+  <p>Balancing study time with applications may tighten schedule. Managed with Asana task blocks.</p>
+      <p class="label">Next Step:</p>
+  <p>Finish two more modules, post progress, and apply to multiple IT roles.</p>
     </div>
 
-    <div class="project-grid">
-
-        <!-- ✅ Project Card – Samuel -->
-        <div class="project-card">
-            <div class="health green">🟢 On Track</div>
-            <p class="label">Project Name:</p>
-            <p>IT Career Launch Campaign</p>
-            <p class="label">Project Owner:</p>
-            <p><strong>Samuel Avila Varela</strong></p>
-            <p class="label">Project Charter:</p>
-            <p><a href="https://savilav.github.io/semester-project-charter-cis-4860/" target="_blank">
-                View Charter & Status Reports</a></p>
-            <p class="label">Summary:</p>
-            <p>Portfolio website improvements are ongoing with enhanced content and branding. Certification planning and job-readiness deliverables remain aligned with stakeholder expectations and timeline.</p>
-            <p class="label">Challenge/Risk:</p>
-            <p>Coordinating peer feedback and job-application pacing may create tighter deadlines near project completion.</p>
-            <p class="label">Next Step:</p>
-            <p>Publish updated portfolio sections and begin applying for targeted IT roles.</p>
-        </div>
-
-        <!-- ✅ Project Card – Elaine -->
-        <div class="project-card">
-            <div class="health green">🟢 On Track</div>
-            <p class="label">Project Name:</p>
-            <p>Entry-Level Job Application / Interview</p>
-            <p class="label">Project Owner:</p>
-            <p><strong>Elaine Li</strong></p>
-            <p class="label">Project Charter:</p>
-            <p><a href="https://elaineli22.github.io/Project_Charter/index.html" target="_blank">
-                View Charter & Status Reports</a></p>
-            <p class="label">Summary:</p>
-            <p>Skill analysis and cybersecurity course work continue to develop a competitive job profile. Progress in the Google Cybersecurity Certificate demonstrates steady advancement toward entry-level career goals.</p>
-            <p class="label">Challenge/Risk:</p>
-            <p>No major risks identified at this time.</p>
-            <p class="label">Next Step:</p>
-            <p>Complete certificate modules, build and launch portfolio, update resume, and apply to targeted roles.</p>
-        </div>
-
-        <!-- ✅ Project Card – Jasmine -->
-        <div class="project-card">
-            <div class="health yellow">🟡 At Risk</div>
-            <p class="label">Project Name:</p>
-            <p>Personal Development Portfolio: UX/UI Design</p>
-            <p class="label">Project Owner:</p>
-            <p><strong>Jasmine Carvalho</strong></p>
-            <p class="label">Project Charter:</p>
-            <p><a href="https://jcarval645.github.io/UX-Design/UXProject2.0.html" target="_blank">
-                View Charter & Deliverables</a></p>
-            <p class="label">Summary:</p>
-            <p>Peer feedback is actively being incorporated into the high-fidelity prototype. A new deliverable broadens visibility through an ASI showcase.</p>
-            <p class="label">Challenge/Risk:</p>
-            <p>Updated timeline and added requirements increase workload and schedule pressure.</p>
-            <p class="label">Next Step:</p>
-            <p>Finalize prototype updates and complete usability testing with a user test report.</p>
-        </div>
-
-        <!-- ✅ Project Card – David -->
-        <div class="project-card">
-            <div class="health green">🟢 On Track</div>
-            <p class="label">Project Name:</p>
-            <p>Entry-Level IT Career Development and Networking</p>
-            <p class="label">Project Owner:</p>
-            <p><strong>David Dominguez</strong></p>
-            <p class="label">Project Charter:</p>
-            <p><a href="https://dcabra16.github.io/project-charter-final-draft/" target="_blank">
-                View Charter & Status Updates</a></p>
-            <p class="label">Summary:</p>
-            <p>David is developing the skills and relationships needed to transition into a Junior Systems Administrator role. Consistent networking supports career opportunities.</p>
-            <p class="label">Challenge/Risk:</p>
-            <p>Reorganizing the project charter after removing outdated deliverables may temporarily slow progress.</p>
-            <p class="label">Next Step:</p>
-            <p>Continue IT training, strengthen workplace networking, and seek hands-on sysadmin experience.</p>
-        </div>
-
-        <!-- ✅ Project Card – Everett -->
-        <div class="project-card">
-            <div class="health yellow">🟡 At Risk</div>
-            <p class="label">Project Name:</p>
-            <p>Transition into Cybersecurity, Network Operations, or Network Administration</p>
-            <p class="label">Project Owner:</p>
-            <p><strong>Everett M. Clayton-Skinner</strong></p>
-            <p class="label">Project Charter:</p>
-            <p><a href="https://ecla442.github.io/Project_Management_Charter_CIS_4680/index_3.html" target="_blank">
-                View Charter & Deliverables</a></p>
-            <p class="label">Summary:</p>
-            <p>Portfolio content highlights existing technical experience and supports transitioning into specialized IT roles post-graduation.</p>
-            <p class="label">Challenge/Risk:</p>
-            <p>Adjustments to deliverable structure and tone based on feedback add work to the schedule.</p>
-            <p class="label">Next Step:</p>
-            <p>Complete website, add more network security work, and start networking by sharing the portfolio.</p>
-        </div>
-
+    <!-- Elaine -->
+    <div class="project-card">
+      <div class="health green">🟢 On Track</div>
+      <p class="label">Project Name:</p>
+      <p>Entry-Level Job Application / Interview</p>
+      <p class="label">Project Owner:</p>
+      <p><strong>Elaine Li</strong></p>
+      <p class="label">Project Charter:</p>
+      <p><a href="https://elaineli22.github.io/Project_Charter/index.html" target="_blank">View Charter & Status Reports</a></p>
+      <p class="label">Summary:</p>
+      <p>Awaiting Week 11 update.</p>
+      <p class="label">Challenge / Risk:</p>
+      <p>Pending.</p>
+      <p class="label">Next Step:</p>
+      <p>Pending.</p>
     </div>
 
+    <!-- Jasmine -->
+    <div class="project-card">
+      <div class="health yellow">🟡 At Risk</div>
+      <p class="label">Project Name:</p>
+      <p>UX / UI Design Portfolio</p>
+      <p class="label">Project Owner:</p>
+      <p><strong>Jasmine Carvalho</strong></p>
+      <p class="label">Project Charter:</p>
+      <p><a href="https://jcarval645.github.io/UX-Design/UXProject2.0.html" target="_blank">View Charter & Status Reports</a></p>
+      <p class="label">Summary:</p>
+      <p>Awaiting Week 11 update.</p>
+      <p class="label">Challenge / Risk:</p>
+      <p>Pending.</p>
+      <p class="label">Next Step:</p>
+      <p>Pending.</p>
+    </div>
+
+    <!-- David -->
+    <div class="project-card">
+      <div class="health green">🟢 On Track</div>
+      <p class="label">Project Name:</p>
+      <p>IT Career Development & Networking</p>
+      <p class="label">Project Owner:</p>
+      <p><strong>David Dominguez</strong></p>
+      <p class="label">Project Charter:</p>
+      <p><a href="https://dcabra16.github.io/project-charter-final-draft/" target="_blank">View Charter & Status Reports</a></p>
+      <p class="label">Summary:</p>
+      <p>Awaiting Week 11 update.</p>
+      <p class="label">Challenge / Risk:</p>
+      <p>Pending.</p>
+      <p class="label">Next Step:</p>
+      <p>Pending.</p>
+    </div>
+
+    <!-- Everett -->
+    <div class="project-card">
+      <div class="health yellow">🟡 At Risk</div>
+      <p class="label">Project Name:</p>
+      <p>Transition to Cybersecurity</p>
+      <p class="label">Project Owner:</p>
+      <p><strong>Everett M. Clayton-Skinner</strong></p>
+      <p class="label">Project Charter:</p>
+      <p><a href="https://ecla442.github.io/Project_Management_Charter_CIS_4680/index_3.html" target="_blank">View Charter & Status Reports</a></p>
+      <p class="label">Summary:</p>
+      <p>Awaiting Week 11 update.</p>
+      <p class="label">Challenge / Risk:</p>
+      <p>Pending.</p>
+      <p class="label">Next Step:</p>
+      <p>Pending.</p>
+    </div>
+  </section>
+
+  <!-- WEEK 10 ARCHIVE (Preserved & Collapsed) -->
+  <section>
+<details class="archive">
+  <summary>📂 Week 10 Status Archive</summary>
+
+  <!-- SAMUEL -->
+  <details class="subarchive">
+    <summary>📁 IT Career Launch Campaign</summary>
+    <small><em>Project Owner: Samuel Avila Varela</em></small>
+    <p><strong>Status:</strong> 🟢 On Track</p>
+    <p><strong>Summary:</strong> The project remains on track and is now entering the Certification & Visibility phases. This week I launched the Coursera Cybersecurity Assessment (CompTIA Security+) course for Deliverable 4 and refined Deliverables 5–6 in response to professor feedback. All updates have been published on my GitHub Pages charter and Asana board to reflect the current workflow and milestones.</p>
+    <p><strong>Challenge / Risk:</strong> Time management for completing Coursera modules while starting real job applications may become challenging. To mitigate this, I scheduled focused certification study blocks and task deadlines within Asana.</p>
+    <p><strong>Next Step:</strong> Finalize at least two Coursera modules, upload certification progress to the portfolio, and begin submitting ≥ 5 IT job applications with tracking and feedback collection (Deliverable 5).</p>
+  </details>
+
+  <!-- ELAINE -->
+  <details class="subarchive">
+    <summary>📁 Entry-Level Job Application / Interview</summary>
+    <small><em>Project Owner: Elaine Li</em></small>
+    <p><strong>Status:</strong> 🟢 On Track</p>
+    <p><strong>Summary:</strong> Progress has been made on the skill analysis for an IT job role, along with key tasks for the cybersecurity course project. I am also continuously working on completing the Google Cybersecurity Professional Certificate on Coursera, demonstrating consistent learning and advancement through each module in alignment with entry-level IT job requirements.</p>
+    <p><strong>Challenge / Risk:</strong> No current challenges or risks are identified. Project remains in progress as scheduled.</p>
+    <p><strong>Next Step:</strong> Complete the skill analysis chart, continue working on the cybersecurity course project, finish courses for the certificate, build and launch the portfolio website, update the resume, and begin applying to IT roles using updated materials.</p>
+  </details>
+
+  <!-- JASMINE -->
+  <details class="subarchive">
+    <summary>📁 UX / UI Design Portfolio</summary>
+    <small><em>Project Owner: Jasmine Carvalho</em></small>
+    <p><strong>Status:</strong> 🟡 At Risk</p>
+    <p><strong>Summary:</strong> The high-fidelity prototype is being refined based on peer feedback to improve its quality. A new deliverable to showcase the project to ASI has been incorporated into the charter.</p>
+    <p><strong>Challenge / Risk:</strong> Timeline was extended to implement feedback from the professor. Workload increased but remains manageable with focused effort.</p>
+    <p><strong>Next Step:</strong> Complete prototype revisions and Deliverable 4: create a user test report, conduct usability tests, and assemble findings into a report.</p>
+  </details>
+
+  <!-- DAVID -->
+  <details class="subarchive">
+    <summary>📁 IT Career Development & Networking</summary>
+    <small><em>Project Owner: David Dominguez</em></small>
+    <p><strong>Status:</strong> 🟢 On Track</p>
+    <p><strong>Summary:</strong> Goal is to upskill and advance into a Junior Systems Administrator role within the workplace. Focus is on developing technical skills and expanding the professional network to support this transition while confirming project approval with the professor.</p>
+    <p><strong>Challenge / Risk:</strong> Needs to update final charter with new artifact information after deleting old ones, which may take time to reorganize and align with revised goals.</p>
+    <p><strong>Next Step:</strong> Research IT certifications and training programs, continue networking within the IT department, and seek hands-on systems administration experience through shadowing.</p>
+  </details>
+
+  <!-- EVERETT -->
+  <details class="subarchive">
+    <summary>📁 Transition to Cybersecurity</summary>
+    <small><em>Project Owner: Everett M. Clayton-Skinner</em></small>
+    <p><strong>Status:</strong> 🟡 At Risk</p>
+    <p><strong>Summary:</strong> This project prepares for a transition into Cybersecurity, Network Operations, or Network Administration. It combines and showcases projects, experience, and certifications to support post-graduation career goals.</p>
+    <p><strong>Challenge / Risk:</strong> Needs to revise deliverables and rephrase portfolio language for clarity and a more human tone, per feedback.</p>
+    <p><strong>Next Step:</strong> Finish portfolio site, add network-security projects to showcase, and share the site for professional networking visibility.</p>
+  </details>
+</details>  </section>
+
+  <footer>Team Steward | CIS 4860 | Fall 2025</footer>
 </body>
 </html>
